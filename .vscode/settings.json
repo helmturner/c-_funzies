@@ -1,0 +1,137 @@
+{
+    "astro.content-intellisense": true,
+    "git.similarityThreshold": 25,
+    "xstate.nestTypegenFiles": true,
+    "vitest.workspaceConfig": "./vitest.workspace.ts",
+
+    "dotnet.defaultSolution": "funzies.slnx",
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
+
+    /*
+    Enable smart editor features
+    */
+    "editor.guides.bracketPairs": "active",
+    "editor.linkedEditing": true,
+    "markdown.updateLinksOnFileMove.enabled": "always",
+    "markdown.editor.pasteUrlAsFormattedLink.enabled": "smart",
+    "javascript.preferences.renameMatchingJsxTags": true,
+    "typescript.preferences.renameMatchingJsxTags": true,
+  
+    /*
+    Typescript editor features
+    */
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "typescript.preferGoToSourceDefinition": true,
+  
+    /*
+    Formatting
+    */
+    "prettier.requireConfig": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    // Show a line for the prettier print width
+    "editor.rulers": [80, 120],
+    // https://github.com/withastro/prettier-plugin-astro/blob/main/README.md#formatting-with-the-vs-code-prettier-extension-directly
+    "prettier.documentSelectors": ["**/*.astro"],
+  
+    /*
+    Collapse related files (to reduce noise in the file explorer)
+    */
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "*.js": "${capture}.*.${extname}, ${capture}.${extName}.map, ${capture}.d.ts, ${capture}.d.ts.map, ${capture}.cjs",
+      "*.jsx": "${capture}.*.${extname}",
+      "*.cjs": "${capture}.*.${extname}, ${capture}.${extName}.map, ${capture}.d.cts, ${capture}.d.cts.map",
+      "*.mjs": "${capture}.js, ${capture}.*.${extname}, ${capture}.${extName}.map, ${capture}.d.mts, ${capture}.d.mts.map",
+      "*.ts": "${capture}.*.${extname}",
+      "*.tsx": "${capture}.*.${extname}",
+      "*.cts": "${capture}.*.${extname}",
+      "*.mts": "${capture}.*.${extname}",
+      "*.d.ts": "${capture}.d.ts.map, ${capture}.d.cts",
+      "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+      "tsconfig.json": "tsconfig.*.json, tsconfig.tsbuildinfo"
+    },
+  
+    /*
+    Some JSON files support comments, so allow them
+    */
+    "files.associations": {
+      "tsconfig.json": "jsonc",
+      "tsconfig.*.json": "jsonc",
+      "turbo.json": "jsonc",
+      "app.json": "jsonc",
+      "encore.app": "jsonc",
+      "bun.lock": "jsonc"
+    },
+  
+    /*
+    Formatter Selections
+    */
+    "[aspnetcorerazor]": { "editor.defaultFormatter": "csharpier.csharpier-vscode" },
+    "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
+    "[csharp]": { "editor.defaultFormatter": "csharpier.csharpier-vscode" },
+    "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[django-html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[graphql]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[handlebars]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[jinja]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[jinja-html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[jsonl]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[mustache]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[nj]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[njk]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[nunjucks]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" },
+    "[twig]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[xml]": { "editor.defaultFormatter": "redhat.vscode-xml" },
+    "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  
+    /*
+    Icon Customizations (helps navigating large projects)
+    */
+    "vsicons.associations.folders": [
+      {
+        "icon": "turbo",
+        "extensions": ["turbo"],
+        "format": "svg"
+      },
+      {
+        "icon": "typescript",
+        "extensions": ["tsconfigs"],
+        "format": "svg"
+      },
+      {
+        "icon": "sso",
+        "extensions": ["auth"],
+        "format": "svg"
+      }
+    ],
+    "vsicons.associations.files": [
+      {
+        "icon": "drawio",
+        "extensions": ["tldr"]
+      },
+      {
+        "icon": "tsconfig",
+        "filename": true,
+        "extensions": [
+          "tsconfig.paths.json",
+          "tsconfig.strict.json",
+          "tsconfig.service.json",
+          "tsconfig.mdx.json",
+          "tsconfig.loose.json"
+        ]
+      }
+    ]
+  }
