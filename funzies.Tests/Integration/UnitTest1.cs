@@ -17,7 +17,7 @@ namespace funzies.Tests.Integration
             var message = "Hello, how are you?";
 
             // Act
-            var response = await client.GetAsync($"/chat?message={message}");
+            var response = await client.PostAsJsonAsync("/chat", new { message });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -33,7 +33,7 @@ namespace funzies.Tests.Integration
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/chat?message=");
+            var response = await client.PostAsJsonAsync("/chat", new { message = "" });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
