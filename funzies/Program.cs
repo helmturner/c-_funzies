@@ -57,3 +57,8 @@ app.MapGet(
     .WithOpenApi();
 
 await app.RunAsync();
+
+public partial class Program
+{
+    private Program() { }
+}

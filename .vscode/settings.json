@@ -5,7 +5,7 @@
     "vitest.workspaceConfig": "./vitest.workspace.ts",
 
     "dotnet.defaultSolution": "funzies.slnx",
-    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.*.@(csproj|vbproj|fsproj)",
 
     /*
     Enable smart editor features
