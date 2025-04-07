@@ -67,7 +67,7 @@ header {
     border-bottom-right-radius: 0;
 }
 
-.bot {
+.ai {
     align-self: flex-start;
     background-color: var(--light-gray);
     color: var(--text-color);

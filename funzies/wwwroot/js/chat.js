@@ -89,7 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         try {
             // Send the message to the server
-            const response = await fetch(`/chat?message=${encodeURIComponent(message)}`);
+            const response = await fetch(`/chat`, {
+                method: "POST",
+                body: JSON.stringify({ message }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             
             // Hide loading indicator
             hideLoading();
@@ -99,9 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Add the bot's response to the chat
                 if (data?.text) {
-                    addMessage(data.text, 'bot');
+                    addMessage(data.text, 'ai');
                 } else {
-                    addMessage('I received an empty response. Please try again.', 'bot');
+                    addMessage('I received an empty response. Please try again.', 'ai');
                 }
             } else {
                 // If the server returns an error, show it

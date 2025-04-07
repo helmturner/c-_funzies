@@ -28,21 +28,21 @@ app.UseAuthorization();
 // Serve the index.html as root
 app.MapGet("/", () => Results.File("index.html", "text/html"));
 
-app.MapGet(
+app.MapPost(
         "/chat",
-        async Task<IResult> (string message) =>
+        async Task<IResult> (ChatRequest request) =>
         {
             using var scope = app.Services.CreateAsyncScope();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
             var openAIService = scope.ServiceProvider.GetRequiredService<IOpenAIService>();
             try
             {
-                if (string.IsNullOrWhiteSpace(message))
+                if (string.IsNullOrWhiteSpace(request.Message))
                 {
                     return Results.BadRequest("Message is required");
                 }
 
-                var response = await openAIService.GenerateChatCompletionAsync(message);
+                var response = await openAIService.GenerateChatCompletionAsync(request.Message);
                 return Results.Ok(new { text = response });
             }
             catch (Exception ex)
@@ -64,5 +64,10 @@ await app.RunAsync();
 
 public partial class Program
 {
-    private Program() { }
+    public Program() { }
+
+    struct ChatRequest
+    {
+        public string Message { get; set; }
+    }
 }

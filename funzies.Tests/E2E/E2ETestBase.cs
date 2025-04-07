@@ -1,25 +1,32 @@
 using Microsoft.Playwright;
-using System.Threading.Tasks;
 
 namespace funzies.Tests.E2E;
 
-public class E2ETestBase : IClassFixture<PlaywrightFixture>, IAsyncLifetime
+public class E2ETestBase(PlaywrightFixture fixture)
+    : IClassFixture<PlaywrightFixture>,
+        IAsyncLifetime
 {
-    protected readonly PlaywrightFixture Fixture;
-    protected IBrowserContext Context;
-    protected IPage Page;
-    protected string BaseUrl => Fixture.ServerAddress;
-
-    public E2ETestBase(PlaywrightFixture fixture)
-    {
-        Fixture = fixture;
-    }
+    protected IBrowserContext Context = null!;
+    protected IPage Page = null!;
+    protected string BaseUrl => fixture.Client.BaseAddress!.ToString();
 
     public async Task InitializeAsync()
     {
-        // Create a new browser context for each test class
-        Context = await Fixture.Browser.NewContextAsync();
-        
+        if (fixture.Browser == null)
+        {
+            throw new Exception("Browser is not initialized.");
+        }
+
+        // Create a new browser context
+        Context = await fixture.Browser.NewContextAsync(
+            new BrowserNewContextOptions
+            {
+                BaseURL = BaseUrl,
+                RecordVideoDir = "videos/",
+                RecordVideoSize = new() { Width = 1280, Height = 720 },
+            }
+        );
+
         // Create a new page in the browser context
         Page = await Context.NewPageAsync();
     }

@@ -1,6 +1,6 @@
 @funzies_HostAddress = http://localhost:5231
 
-GET {{funzies_HostAddress}}/chat/
+GET {{funzies_HostAddress}}/chat
 Accept: application/json
 
 ###

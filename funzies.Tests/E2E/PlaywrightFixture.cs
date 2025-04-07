@@ -1,6 +1,8 @@
+using System.Configuration;
 using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Playwright;
 
@@ -11,74 +13,61 @@ namespace funzies.Tests.E2E;
 /// </summary>
 public class PlaywrightFixture : IAsyncLifetime
 {
-    private WebApplicationFactory<Program>? _factory;
-    private string _baseUrl = "http://localhost:5321";
-    private IPlaywright _playwright = null!;
+    public WebApplicationFactory<Program> ApplicationFactory;
+    protected TestServer? _server;
+    public readonly int _port = int.Parse(ConfigurationManager.AppSettings["TestPort"] ?? "5000");
 
-    public IBrowser Browser { get; private set; } = null!;
-    public string ServerAddress => _baseUrl;
+    public IPlaywright? Playwright;
+    public IBrowser? Browser;
+
+    public required HttpClient Client;
 
     public async Task InitializeAsync()
     {
-        // Create a factory with a real server configured for E2E testing
-        _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+        ApplicationFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
-            // Use the Test environment
             builder.UseEnvironment("Test");
 
             // Configure Kestrel to use a dynamic port
             builder.UseKestrel(options =>
             {
-                var port = GetFreeTcpPort();
-                options.Listen(IPAddress.Loopback, port);
-                _baseUrl = $"http://localhost:{port}";
-                Console.WriteLine($"Test server starting on {_baseUrl}");
-            });
-
-            // Add any additional configuration needed for testing
-            builder.ConfigureServices(services =>
-            {
-                // You could replace services with test implementations here if needed
+                options.Listen(IPAddress.Loopback, _port);
             });
         });
 
-        // Start the server by making a request to it
-        var client = _factory.CreateClient();
-        var response = await client.GetAsync("/");
-        Console.WriteLine($"Server ready with status code: {response.StatusCode}");
+        _server = ApplicationFactory.Server;
+        _server.BaseAddress = new Uri($"http://localhost:{_port}");
+        Client = _server.CreateClient();
+        // Start the web server
+        await Client.GetAsync("/");
+        Console.WriteLine("Server started");
 
-        // Set up Playwright
-        _playwright = await Playwright.CreateAsync();
-        Browser = await _playwright.Chromium.LaunchAsync(
+        if (Client.BaseAddress == null)
+        {
+            throw new InvalidOperationException("BaseAddress is null");
+        }
+
+        // Install Playwright browsers if needed and initialize
+        Microsoft.Playwright.Program.Main(["install"]);
+
+        var playwright = await Microsoft.Playwright.Playwright.CreateAsync();
+
+        Browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions { Headless = true }
         );
     }
 
-    private static int GetFreeTcpPort()
-    {
-        var listener = new System.Net.Sockets.TcpListener(IPAddress.Loopback, 0);
-        listener.Start();
-        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-        listener.Stop();
-        return port;
-    }
-
     public async Task DisposeAsync()
     {
-        Console.WriteLine("Disposing PlaywrightFixture...");
-
         if (Browser != null)
         {
             await Browser.DisposeAsync();
         }
 
-        if (_factory != null)
+        if (ApplicationFactory != null)
         {
-            await _factory.DisposeAsync();
+            await ApplicationFactory.DisposeAsync();
         }
-
-        _playwright?.Dispose();
-
-        Console.WriteLine("PlaywrightFixture disposed.");
+        Playwright?.Dispose();
     }
 }

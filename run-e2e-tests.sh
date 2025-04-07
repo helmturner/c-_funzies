@@ -6,11 +6,21 @@ export ASPNETCORE_ENVIRONMENT=Test
 # Change to the E2E test directory
 cd "$(dirname "$0")/funzies.Tests/E2E"
 
-# Install Playwright browsers if needed
-dotnet add package Microsoft.Playwright.CLI --version 1.51.0
+# Build the project first
 dotnet build
-dotnet tool install --global Microsoft.Playwright.CLI --version 1.51.0 || true
-playwright install
+
+# Install the Playwright tool
+dotnet tool install --global Microsoft.Playwright.CLI || true
+
+# Try to install browsers with fallbacks for different platforms
+if command -v playwright &>/dev/null; then
+  playwright install
+elif command -v pwsh &>/dev/null; then
+  pwsh -Command "playwright install"
+else
+  echo "Installing browsers via dotnet CLI"
+  dotnet exec ~/.dotnet/tools/playwright.dll install
+fi
 
 # Run the E2E tests
 dotnet test

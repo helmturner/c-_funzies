@@ -1,18 +1,14 @@
 using FluentAssertions;
-using Microsoft.Playwright;
 
 namespace funzies.Tests.E2E;
 
-public class WebUITests : E2ETestBase
+public class WebUITests(PlaywrightFixture fixture) : E2ETestBase(fixture)
 {
-    public WebUITests(PlaywrightFixture fixture)
-        : base(fixture) { }
-
     [Fact]
     public async Task HomePage_ShouldLoad_Successfully()
     {
         // Arrange & Act
-        var response = await Page.GotoAsync(BaseUrl);
+        var response = await Page.GotoAsync(fixture.Client.BaseAddress!.ToString());
 
         // Assert
         response.Should().NotBeNull();
@@ -20,14 +16,14 @@ public class WebUITests : E2ETestBase
 
         // Verify page title
         var title = await Page.TitleAsync();
-        title.Should().Contain("Chat Application");
+        title.Should().Contain("Canyon Trail Chat");
 
         // Verify UI elements
         var chatContainer = await Page.QuerySelectorAsync("#chatContainer");
         chatContainer.Should().NotBeNull();
 
-        var messageInput = await Page.QuerySelectorAsync("#messageInput");
-        messageInput.Should().NotBeNull();
+        var chatInput = await Page.QuerySelectorAsync("#chatInput");
+        chatInput.Should().NotBeNull();
 
         var sendButton = await Page.QuerySelectorAsync("#sendButton");
         sendButton.Should().NotBeNull();
@@ -37,14 +33,14 @@ public class WebUITests : E2ETestBase
     public async Task ChatUI_ShouldSendMessage_AndReceiveResponse()
     {
         // Arrange
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync(fixture.Client.BaseAddress!.ToString());
 
-        // Initial message count should be 0
+        // Initial message count should be 1, the initial prompt.
         var initialMessageCount = await Page.QuerySelectorAllAsync(".message");
-        initialMessageCount.Count.Should().Be(0);
+        initialMessageCount.Count.Should().Be(1);
 
         // Act - Type a message and click send
-        await Page.FillAsync("#messageInput", "Hello, AI assistant!");
+        await Page.FillAsync("#chatInput", "Hello, AI assistant!");
         await Page.ClickAsync("#sendButton");
 
         // Wait for the user message to appear
