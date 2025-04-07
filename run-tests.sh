@@ -29,15 +29,15 @@ echo
 # Run each test type based on arguments
 if [ $# -eq 0 ] || [ "$1" == "all" ]; then
     # Run all test types
-    run_tests "funzies.Tests.Unit/funzies.Tests.Unit.csproj" "Unit"
+    run_tests "funzies.Tests/Unit/funzies.Tests.Unit.csproj" "Unit"
     unit_result=$?
     echo
     
-    run_tests "funzies.Tests.Integration/funzies.Tests.Integration.csproj" "Integration"
+    run_tests "funzies.Tests/Integration/funzies.Tests.Integration.csproj" "Integration"
     integration_result=$?
     echo
     
-    run_tests "funzies.Tests.E2E/funzies.Tests.E2E.csproj" "End-to-End"
+    run_tests "funzies.Tests/E2E/funzies.Tests.E2E.csproj" "End-to-End"
     e2e_result=$?
     
     # Report overall status
@@ -50,13 +50,13 @@ if [ $# -eq 0 ] || [ "$1" == "all" ]; then
         exit 1
     fi
 elif [ "$1" == "unit" ]; then
-    run_tests "funzies.Tests.Unit/funzies.Tests.Unit.csproj" "Unit"
+    run_tests "funzies.Tests/Unit/funzies.Tests.Unit.csproj" "Unit"
     exit $?
 elif [ "$1" == "integration" ]; then
-    run_tests "funzies.Tests.Integration/funzies.Tests.Integration.csproj" "Integration"
+    run_tests "funzies.Tests/Integration/funzies.Tests.Integration.csproj" "Integration"
     exit $?
 elif [ "$1" == "e2e" ]; then
-    run_tests "funzies.Tests.E2E/funzies.Tests.E2E.csproj" "End-to-End"
+    run_tests "funzies.Tests/E2E/funzies.Tests.E2E.csproj" "End-to-End"
     exit $?
 else
     echo -e "${RED}Invalid test type: $1${NC}"
