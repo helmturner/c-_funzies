@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canyon Trail Chat</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>Canyon Trail Chat</h1>
+        </header>
+        <div class="chat-box" id="chatBox">
+            <div class="message system">
+                <p>Welcome to Canyon Trail Chat! How can I help you today?</p>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <form id="chatForm">
+                <input type="text" id="chatInput" placeholder="Type your message..." autocomplete="off">
+                <button type="submit" id="sendButton">Send</button>
+            </form>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+    </div>
+    <script src="js/chat.js"></script>
+</body>
+</html>

@@ -8,8 +8,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IOpenAIService, OpenAIService>();
 
-// Register OpenAI service
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,11 +16,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// Enable static files middleware
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 app.MapControllers();
 
 app.UseRouting();
 app.UseAuthorization();
+
+// Serve the index.html as root
+app.MapGet("/", () => Results.File("index.html", "text/html"));
 
 app.MapGet(
         "/chat",
